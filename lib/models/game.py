@@ -1,7 +1,10 @@
 from models.__init__ import CURSOR, CONN
 
 class Game:
-    def __init__(self, title, genre, description, id=None):
+
+    all = []
+
+    def __init__(self, title, genre, id=None):
         self.id = id
         if not isinstance(title, str) or not len(title) > 0:
             raise AttributeError("Title must be a string of 1 or more characters.")
@@ -9,12 +12,13 @@ class Game:
         if not isinstance(genre, str) or not len(genre) > 0:
             raise AttributeError("Genre must be a string of 1 or more characters.")
         self._genre = genre
-        if not isinstance(description, str) or not len(description) > 0:
-            raise AttributeError("Description must be a string of 1 or more characters.")
-        self._description = description
+        # if not isinstance(description, str) or not len(description) > 0:
+        #     raise AttributeError("Description must be a string of 1 or more characters.")
+        # self._description = description
+        Game.all.append(self)
 
     def __repr__(self):
-        return f"<Game {self.id}: {self._title}, {self._description}>"
+        return f"<Game {self.id}: {self._title}, {self.genre}>"
     
     @property
     def title(self):
@@ -35,15 +39,15 @@ class Game:
             raise AttributeError("New Genre must be a string of 1 or more characters.")
         self._genre = value
 
-    @property
-    def description(self):
-        return self._description
+    # @property
+    # def description(self):
+    #     return self._description
     
-    @description.setter
-    def description (self, value):
-        if not isinstance(value, str) or not len(value) > 0:
-            raise AttributeError("Description must be a string of 1 or more characters.")
-        self._description = value
+    # @description.setter
+    # def description (self, value):
+    #     if not isinstance(value, str) or not len(value) > 0:
+    #         raise AttributeError("Description must be a string of 1 or more characters.")
+    #     self._description = value
 
     @classmethod
     def create_table(cls):
@@ -171,11 +175,5 @@ class Game:
 
         row = CURSOR.execute(sql, (title,)).fetchone()
         return cls.instance_from_db(row) if row else None
-
-    # need class methods
-    # CRUD
-
-    # need properties and setters
-    # title, genre, description
 
     
