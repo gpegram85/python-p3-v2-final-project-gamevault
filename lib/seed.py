@@ -10,12 +10,24 @@ def seed_database():
     Game.create_table()
     Player.create_table()
 
-    # Seed data creation
-    player_one = Player.create("GBP", "1,000,000")
-    player_two = Player.create("RSH", "865,190")
+    sql = """
+        CREATE TABLE IF NOT EXISTS players_games (
+        id INTERGER PRIMARY KEY,
+        player_id INTEGER,
+        game_id INTEGER,
+        score TEXT,
+        FOREIGN KEY (player_id) REFERENCES players(id),
+        FOREIGN KEY (game_id) REFERENCES games(id)
+        );
+    """
+    CURSOR.execute(sql)
+    CONN.commit()
 
-    Game.create("Title One", "Action/RPG", "Placeholder description.")
-    Game.create("Title Two", "Action/RPG", "Placeholder description.")
-    Game.create("Title Three", "Action/RPG", "Placeholder description.")
-    Game.create("Title Four", "Action/RPG", "Placeholder description.")
-    Game.create("Title Five", "Action/RPG", "Placeholder description.")
+    # Seed data creation
+    player_one = Player.create("Grey")
+    player_two = Player.create("Rachel")
+    player_three = Player.create("Rowan")
+    
+    game_one = Game.create("Borderlands", "FPS")
+    game_two = Game.create("Fortnite", "FPS")
+    game_three = Game.create("Mario Kart", "Racing")
